@@ -69,29 +69,3 @@ Recomendaciones:
 - Considera otros factores económicos y del mercado al tomar decisiones basadas en estos ratios.
 """)
 
-client = openai.OpenAI(api_key='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')
-
-def obtener_respuesta(prompt):
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",  # Ajusta el modelo según lo que necesites
-        messages=[
-            {"role": "system", "content": """
-            Eres experto en análisis de solvencia financiera y análisis de ratios financieros. Contesta siempre en español
-            en un máximo de 50 palabras.
-            """}, # Sólo podemos personalizar la parte de content
-            {"role": "user", "content": prompt}
-        ]
-    )
-    output = response.choices[0].message.content
-    return output
-
-st.header('Consulta a ChatGPT')
-user_question = st.text_input("Haz una pregunta sobre los datos financieros:")
-
-if user_question:
-    # Preparar el contexto con los datos financieros
-    context = f"Datos financieros:\n{df.to_string()}\n\nPregunta del usuario: {user_question}"
-
-    response = obtener_respuesta(context)
-    st.write("Respuesta de ChatGPT:")
-    st.write(response)
